@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        scoreText.setText("Score: " + game.getScore());
     }
     private int getCellColor(int value){
         // Implement color logic based on tile value

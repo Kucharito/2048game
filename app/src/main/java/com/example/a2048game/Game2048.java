@@ -5,12 +5,18 @@ import java.util.Random;
 public class Game2048 {
     private int[][] grid = new int[4][4];
     private Random random = new Random();
+    private int score = 0;
 
     public int[][] getGrid() {
         return grid;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public void startGame(){
+        score = 0;
         for (int i=0;i<4;i++){
             for (int j=0;j<4;j++){
                 grid[i][j] = 0;
@@ -31,10 +37,23 @@ public class Game2048 {
         System.out.println("💡 Pridaná nová dlaždica na (" + row + "," + col + ") = " + grid[row][col]);
     }
 
+    private static class RowResult{
+        int[] newRow;
+        int gainedScore;
+        boolean moved;
+        RowResult(int[] newRow, int gainedScore, boolean moved){
+            this.newRow = newRow;
+            this.gainedScore = gainedScore;
+            this.moved = moved;
+        }
+    }
 
-    private int[] processRow(int[] row, boolean[] changedFlag) {
+
+    private RowResult processRow(int[] row) {
         int[] newRow = new int[4];
         int pos = 0;
+        boolean moved = false;
+        int gainedScore = 0;
 
         for (int j = 0; j < 4; j++) {
             if (row[j] != 0) {
@@ -46,8 +65,9 @@ public class Game2048 {
         for (int j = 0; j < 3; j++) {
             if (newRow[j] != 0 && newRow[j] == newRow[j + 1]) {
                 newRow[j] *= 2;
+                gainedScore += newRow[j];
                 newRow[j + 1] = 0;
-                changedFlag[0] = true;
+                moved = true;
             }
         }
 
@@ -61,20 +81,20 @@ public class Game2048 {
         }
 
         if (!java.util.Arrays.equals(row, finalRow)) {
-            changedFlag[0] = true;
+            moved = true;
         }
 
-        return finalRow;
+        return new RowResult(finalRow, gainedScore, moved);
     }
 
 
     public boolean moveLeft() {
         boolean moved = false;
         for (int i = 0; i < 4; i++) {
-            boolean[] changedFlag = {false};
-            int[] finalRow = processRow(grid[i], changedFlag);
-            grid[i] = finalRow;
-            if (changedFlag[0]) moved = true;
+            RowResult result = processRow(grid[i]);
+            grid[i] = result.newRow;
+            score += result.gainedScore;
+            if (result.moved) moved = true;
         }
         if (moved) addNewTile();
         return moved;
@@ -103,12 +123,14 @@ public class Game2048 {
         boolean moved = false;
         for (int i = 0; i < 4; i++) {
             int[] reversedRow = reverseRow(grid[i]);
-            boolean[] changedFlag = {false};
-            int[] finalRow = processRow(reversedRow, changedFlag);
-            finalRow = reverseRow(finalRow);
+            RowResult result = processRow(reversedRow);
+            int [] finalRow = reverseRow(result.newRow);
 
+            if(!java.util.Arrays.equals(grid[i], finalRow)){
+                moved = true;
+            }
             grid[i] = finalRow;
-            if (changedFlag[0]) moved = true;
+            score += result.gainedScore;
         }
         if (moved) addNewTile();
         return moved;

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/main_menu">
 
@@ -11,35 +12,63 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp"
-        android:gravity="center"
-        tools:layout_editor_absoluteY="1dp">
+        android:gravity="top|center_horizontal"
+        tools:layout_editor_absoluteY="1dp"
+        android:background="@color/light_orange">
 
-        <Button
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@drawable/intro2048pic"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="0dp"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonStart"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="@color/orange"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
             android:text="Start" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonInfo"
             android:layout_width="200dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="13dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/orange"
+            app:cornerRadius="8dp"
+            android:textStyle="bold"
             android:text="Info" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonOptions"
             android:layout_width="200dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="13dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            app:cornerRadius="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Options" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonExit"
             android:layout_width="200dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="13dp"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/orange"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Exit" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
