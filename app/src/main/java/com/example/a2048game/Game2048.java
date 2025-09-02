@@ -32,26 +32,26 @@ public class Game2048 {
     }
 
 
-    private int[] processRow(int[] row) {
+    private int[] processRow(int[] row, boolean[] changedFlag) {
         int[] newRow = new int[4];
         int pos = 0;
 
-        // 1. stlačiť doľava
         for (int j = 0; j < 4; j++) {
             if (row[j] != 0) {
                 newRow[pos++] = row[j];
             }
         }
 
-        // 2. merge
+        // merge
         for (int j = 0; j < 3; j++) {
             if (newRow[j] != 0 && newRow[j] == newRow[j + 1]) {
                 newRow[j] *= 2;
                 newRow[j + 1] = 0;
+                changedFlag[0] = true;
             }
         }
 
-        // 3. znova stlačiť
+        // znova stlačiť
         int[] finalRow = new int[4];
         pos = 0;
         for (int j = 0; j < 4; j++) {
@@ -60,20 +60,26 @@ public class Game2048 {
             }
         }
 
+        if (!java.util.Arrays.equals(row, finalRow)) {
+            changedFlag[0] = true;
+        }
+
         return finalRow;
     }
+
+
     public boolean moveLeft() {
         boolean moved = false;
         for (int i = 0; i < 4; i++) {
-            int[] finalRow = processRow(grid[i]);
-            if (!java.util.Arrays.equals(grid[i], finalRow)) {
-                grid[i] = finalRow;
-                moved = true;
-            }
+            boolean[] changedFlag = {false};
+            int[] finalRow = processRow(grid[i], changedFlag);
+            grid[i] = finalRow;
+            if (changedFlag[0]) moved = true;
         }
         if (moved) addNewTile();
         return moved;
     }
+
 
     private int[] reverseRow(int[]row){
         int[] newRow = new int[4];
@@ -93,20 +99,21 @@ public class Game2048 {
         grid = newGrid;
     }
 
-    public boolean moveRight(){
+    public boolean moveRight() {
         boolean moved = false;
-        for (int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             int[] reversedRow = reverseRow(grid[i]);
-            int[] finalRow = processRow(reversedRow);
+            boolean[] changedFlag = {false};
+            int[] finalRow = processRow(reversedRow, changedFlag);
             finalRow = reverseRow(finalRow);
-            if (!java.util.Arrays.equals(grid[i], finalRow)){
-                grid[i] = finalRow;
-                moved = true;
-            }
+
+            grid[i] = finalRow;
+            if (changedFlag[0]) moved = true;
         }
         if (moved) addNewTile();
         return moved;
     }
+
 
     public boolean moveUp(){
         transposeGrid();

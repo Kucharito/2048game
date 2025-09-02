@@ -1,9 +1,14 @@
 package com.example.a2048game;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,8 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout gridLayout;
     private TextView scoreText;
     private Game2048 game;
+    private LinearLayout menuOverlay;
 
     private float downX, downY;
+
+    private RectF openMenuButtonRect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,29 @@ public class MainActivity extends AppCompatActivity {
         initGrid();
         game.startGame();
         updateUI();
+
+        menuOverlay = findViewById(R.id.menuOverlay);
+        Button openMenuButton = findViewById(R.id.openMenuButton);
+        Button resumeButton = findViewById(R.id.resumeButton);
+        Button mainMenuButton = findViewById(R.id.mainMenuButton);
+
+        openMenuButton.setOnClickListener(v -> {
+            menuOverlay.setVisibility(View.VISIBLE);
+        });
+
+        resumeButton.setOnClickListener(v -> {
+            menuOverlay.setVisibility(View.GONE);
+        });
+
+        mainMenuButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+            startActivity(intent);
+            //finish();
+        });
+
+
+
+
 
     }
 
