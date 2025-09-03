@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">2048Game</string>
+    <string name="Start">Start</string>
+    <string name="Info">Info</string>
+    <string name="Options">Options</string>
+    <string name="Exit">Exit</string>
+    <string name="BackToMenu">Back to menu</string>
+    <string name="Resume">Resume</string>
+    <string name="MainMenu">Main Menu</string>
+    <string name="Score">Score: </string>
+    <string name="BestScore">Best Score: </string>
+    <string name="RestartButton">Restart</string>
 </resources>

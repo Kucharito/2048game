@@ -1,6 +1,7 @@
 package com.example.a2048game;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -25,12 +26,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView[][] cells = new TextView[4][4];
     private GridLayout gridLayout;
     private TextView scoreText;
+    private TextView highestScoreText;
     private Game2048 game;
     private LinearLayout menuOverlay;
+    private int highest_score = 0;
+    private LinearLayout gameOverOverlay;
 
     private float downX, downY;
 
-    private RectF openMenuButtonRect;
+
+    SharedPreferences sharedPreferences;
+    public static final String SHARED_PREFS = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +46,25 @@ public class MainActivity extends AppCompatActivity {
 
         gridLayout = findViewById(R.id.grid2048);
         scoreText = findViewById(R.id.scoreText);
+        highestScoreText = findViewById(R.id.bestScoreText);
         game = new Game2048();
+
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        highest_score = sharedPreferences.getInt("highest_score", 0);
+
 
         initGrid();
         game.startGame();
         updateUI();
 
         menuOverlay = findViewById(R.id.menuOverlay);
+        gameOverOverlay = findViewById(R.id.gameOverOverlay);
+
         Button openMenuButton = findViewById(R.id.openMenuButton);
         Button resumeButton = findViewById(R.id.resumeButton);
         Button mainMenuButton = findViewById(R.id.mainMenuButton);
+        Button restartButton = findViewById(R.id.restartButton);
+        Button mainMenuButton_second = findViewById(R.id.mainMenuButton_second);
 
         openMenuButton.setOnClickListener(v -> {
             menuOverlay.setVisibility(View.VISIBLE);
@@ -65,6 +80,18 @@ public class MainActivity extends AppCompatActivity {
             //finish();
         });
 
+        mainMenuButton_second.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+            startActivity(intent);
+            //finish();
+        });
+
+        restartButton.setOnClickListener(v -> {
+            game.startGame();
+            updateUI();
+            menuOverlay.setVisibility(View.GONE);
+            gameOverOverlay.setVisibility(View.GONE);
+        });
 
 
 
@@ -135,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(){
+
         int[][] grid = game.getGrid();
         for (int i=0;i<4;i++) {
             for (int j = 0; j < 4; j++) {
@@ -150,7 +178,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        scoreText.setText("Score: " + game.getScore());
+        if(highest_score < game.getScore()){
+            highest_score = game.getScore();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("highest_score", highest_score);
+            editor.apply();
+        }
+
+        scoreText.setText(getString(R.string.Score) + game.getScore());
+        highestScoreText.setText(getString(R.string.BestScore) + highest_score);
+
+        if(game.isGameOver()){
+            LinearLayout gameOverOverlay = findViewById(R.id.gameOverOverlay);
+            gameOverOverlay.setVisibility(View.VISIBLE);
+        }
+
     }
     private int getCellColor(int value){
         // Implement color logic based on tile value

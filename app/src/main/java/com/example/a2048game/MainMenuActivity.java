@@ -33,12 +33,7 @@ public class MainMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(MainMenuActivity.this, InfoActivity.class);
             startActivity(intent);
         });
-        Button optionsButton = findViewById(R.id.buttonOptions);
-        optionsButton.setOnClickListener(v -> {
-            // Show game options
-            Intent intent = new Intent(MainMenuActivity.this, OptionsActivity.class);
-            startActivity(intent);
-        });
+
         Button exitButton = findViewById(R.id.buttonExit);
         exitButton.setOnClickListener(v -> {
             // Exit the application

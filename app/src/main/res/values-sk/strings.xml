@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">2048Hra</string>
+    <string name="Start">Štart</string>
+    <string name="Info">Info</string>
+    <string name="Options">Možnosti</string>
+    <string name="Exit">Ukončiť</string>
+    <string name="BackToMenu">Späť do menu</string>
+    <string name="Resume">Pokračovať</string>
+    <string name="MainMenu">Hlavné menu</string>
+    <string name="Score">Skóre: </string>
+    <string name="BestScore">Najlepšie skóre: </string>
+    <string name="RestartButton">Reštart</string>
+</resources>

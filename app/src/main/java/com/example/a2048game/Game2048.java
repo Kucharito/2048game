@@ -151,6 +151,23 @@ public class Game2048 {
         return moved;
     }
 
+    public boolean isGameOver(){
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(grid[i][j] ==0){
+                    return false;
+                }
+                if(j<3 && grid[i][j] == grid[i][j+1]){
+                    return false;
+                }
+                if(i<3 && grid[i][j] == grid[i+1][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
 
 
