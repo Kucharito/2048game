@@ -25,6 +25,7 @@ public class MainMenuActivity extends AppCompatActivity {
             // Start the game activity
             Intent intent = new Intent(MainMenuActivity.this, MainActivity.class);
             startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         });
 
         Button infoButton = findViewById(R.id.buttonInfo);
@@ -32,12 +33,14 @@ public class MainMenuActivity extends AppCompatActivity {
             // Show game information
             Intent intent = new Intent(MainMenuActivity.this, InfoActivity.class);
             startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         });
 
         Button exitButton = findViewById(R.id.buttonExit);
         exitButton.setOnClickListener(v -> {
             // Exit the application
             finishAffinity();
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         });
 
     }

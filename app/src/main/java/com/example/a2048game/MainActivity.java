@@ -77,12 +77,14 @@ public class MainActivity extends AppCompatActivity {
         mainMenuButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
             startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             //finish();
         });
 
         mainMenuButton_second.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
             startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             //finish();
         });
 
