@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout menuOverlay;
     private int highest_score = 0;
     private LinearLayout gameOverOverlay;
+    private LinearLayout gameWinOverlay;
 
     private float downX, downY;
 
@@ -59,12 +60,15 @@ public class MainActivity extends AppCompatActivity {
 
         menuOverlay = findViewById(R.id.menuOverlay);
         gameOverOverlay = findViewById(R.id.gameOverOverlay);
+        gameWinOverlay = findViewById(R.id.gameWinOverlay);
 
         Button openMenuButton = findViewById(R.id.openMenuButton);
         Button resumeButton = findViewById(R.id.resumeButton);
         Button mainMenuButton = findViewById(R.id.mainMenuButton);
         Button restartButton = findViewById(R.id.restartButton);
         Button mainMenuButton_second = findViewById(R.id.mainMenuButton_second);
+        Button mainMenuButton_third = findViewById(R.id.mainMenuButton_third);
+        Button restartButton_second = findViewById(R.id.restartButton_second);
 
         openMenuButton.setOnClickListener(v -> {
             menuOverlay.setVisibility(View.VISIBLE);
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         resumeButton.setOnClickListener(v -> {
             menuOverlay.setVisibility(View.GONE);
         });
+
 
         mainMenuButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
@@ -88,15 +93,28 @@ public class MainActivity extends AppCompatActivity {
             //finish();
         });
 
+        mainMenuButton_third.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            //finish();
+        });
+
         restartButton.setOnClickListener(v -> {
             game.startGame();
             updateUI();
             menuOverlay.setVisibility(View.GONE);
             gameOverOverlay.setVisibility(View.GONE);
+            gameWinOverlay.setVisibility(View.GONE);
         });
 
-
-
+        restartButton_second.setOnClickListener(v -> {
+            game.startGame();
+            updateUI();
+            menuOverlay.setVisibility(View.GONE);
+            gameOverOverlay.setVisibility(View.GONE);
+            gameWinOverlay.setVisibility(View.GONE);
+        });
 
     }
 
@@ -186,6 +204,19 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("highest_score", highest_score);
             editor.apply();
         }
+
+
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(grid[i][j] == 2048){
+                    gameWinOverlay.setVisibility(View.VISIBLE);
+                    menuOverlay.setVisibility(View.GONE);
+                    gameOverOverlay.setVisibility(View.GONE);
+                }
+            }
+
+        }
+
 
         scoreText.setText(getString(R.string.Score) + game.getScore());
         highestScoreText.setText(getString(R.string.BestScore) + highest_score);
