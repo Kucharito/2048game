@@ -193,8 +193,27 @@ public class MainActivity extends AppCompatActivity {
                     cell.setBackgroundColor(Color.parseColor("#CDC1B4"));
                 }
                 else{
-                    cell.setText(String.valueOf(value));
-                    cell.setBackgroundColor(getCellColor(value));
+                    /*cell.setText(String.valueOf(value));
+                    cell.setBackgroundColor(getCellColor(value));*/
+                        String oldText = cell.getText().toString();
+                        if(cell.getText().toString().isEmpty()){
+                            cell.setAlpha(0f);
+                            cell.setText(String.valueOf(value));
+                            cell.setBackgroundColor(getCellColor(value));
+                            cell.animate().alpha(1f).setDuration(150).start();
+                        }
+                        else if(!oldText.equals(String.valueOf(value))){
+                            cell.setScaleX(0.8f);
+                            cell.setScaleY(0.8f);
+                            cell.setText(String.valueOf(value));
+                            cell.setBackgroundColor(getCellColor(value));
+                            cell.animate().scaleX(1f).scaleY(1f).setDuration(150).start();
+
+                        }
+                        else{
+                            cell.setText(String.valueOf(value));
+                            cell.setBackgroundColor(getCellColor(value));
+                        }
                 }
             }
         }
