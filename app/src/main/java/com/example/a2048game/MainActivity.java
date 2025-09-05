@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private int highest_score = 0;
     private LinearLayout gameOverOverlay;
     private LinearLayout gameWinOverlay;
-
+    private SoundPool soundPool;
+    private AudioAttributes audioAttributes;
+    private int soundSlideTile;
+    private boolean soundsReady = false;
     private float downX, downY;
 
 
@@ -52,6 +57,26 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         highest_score = sharedPreferences.getInt("highest_score", 0);
+
+        audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(5)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        soundSlideTile = soundPool.load(this, R.raw.swipe, 1);
+
+        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+            if (status == 0) {
+                soundsReady = true;
+            } else {
+                // Handle the error
+            }
+        });
 
 
         initGrid();
@@ -118,6 +143,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void playHit(){
+        if(soundsReady){
+            soundPool.play(soundSlideTile, 1,1,0,0,1);
+        }
+    }
+
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
         switch (event.getAction()){
@@ -130,24 +161,23 @@ public class MainActivity extends AppCompatActivity {
                 float upY = event.getY();
                 float deltaX = upX - downX;
                 float deltaY = upY - downY;
+                boolean moved = false;
                 if(Math.abs(deltaX) > Math.abs(deltaY)){
                     if(deltaX >100){
-                        game.moveRight();
+                        moved = game.moveRight();
                     } else if(deltaX < -100){
-                        game.moveLeft();
+                        moved = game.moveLeft();
                     }
-                    //game.addNewTile();
-                    updateUI();
-
                 } else{
                     if(deltaY >100){
-                        game.moveDown();
+                        moved = game.moveDown();
                     } else if(deltaY < -100){
-                        game.moveUp();
+                        moved = game.moveUp();
                     }
-                    //game.addNewTile();
+                }
+                if(moved){
                     updateUI();
-
+                    playHit();
                 }
                 return true;
         }
@@ -235,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+
 
 
         scoreText.setText(getString(R.string.Score) + game.getScore());
