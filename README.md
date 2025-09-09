@@ -47,5 +47,4 @@ Features:
 
 ## 🧑‍💻 Author
 
-Created by **Adam Kuchár**  
-Developed as part of coursework – **ZPG course (Computer Graphics)**.  
+Created by **Adam Kuchár**    
